@@ -2,15 +2,20 @@
 
 Full-stack sample with a .NET 10 Web API and a React 19 + Vite client. The API uses EF Core with SQLite, seeds demo activities at startup, and exposes them to the client.
 
+## Quick Start
+1. Start API: `dotnet run --project API/API.csproj`
+2. Start client: `cd Client && npm install && npm run dev`
+
 ## Stack
 - Backend: ASP.NET Core 10, EF Core Sqlite, minimal hosting
 - Frontend: React + TypeScript, Vite, fetches activities from the API
 
 ## Project Structure
 - `API/` — Web API (`/api/activities`, `appsettings.Development.json` for connection string)
-- `Persistence/` — EF Core DbContext, migrations, seeding (`reactivities.db`)
+- `Persistence/` — EF Core DbContext, migrations, seeding
 - `Domain/` — Activity entity
 - `Client/` — React app (Vite)
+- `Reactivities.slnx` — solution file
 
 ## Prerequisites
 - .NET 10 SDK
@@ -20,7 +25,7 @@ Full-stack sample with a .NET 10 Web API and a React 19 + Vite client. The API u
 ## Backend (API)
 1. Restore/build (from repo root): `dotnet restore`
 2. Run the API: `dotnet run --project API/API.csproj`
-   - HTTPS: `https://localhost:5001` (HTTP: `http://localhost:5000`)
+   - HTTPS: `https://localhost:5001`
    - Applies EF Core migrations and seeds `reactivities.db` automatically on startup.
 3. Key endpoints:
    - `GET /api/activities` — list activities
@@ -30,8 +35,10 @@ Full-stack sample with a .NET 10 Web API and a React 19 + Vite client. The API u
 
 ## Frontend (Client)
 1. Install deps: `cd Client && npm install`
-2. Start dev server: `npm run dev -- --host --port 3000`
-   - The app fetches from `https://localhost:5001/api/activities`.
+2. Start dev server: `npm run dev`
+   - Vite runs on port `3000` (see `Client/vite.config.ts`).
+   - This repo uses `vite-plugin-mkcert`, so the dev server may run on `https://localhost:3000`.
+   - The app fetches from `https://localhost:5001/api/activities` (currently hard-coded in `Client/src/App.tsx`).
    - CORS is enabled for `http://localhost:3000` and `https://localhost:3000` in `API/Program.cs`.
 
 ## Data Model
@@ -43,5 +50,5 @@ Activity fields: `id`, `title`, `date`, `description`, `category`, `isCancelled`
 - Move DB/change connection: update `DefaultConnection` in `API/appsettings.Development.json`.
 
 ## Troubleshooting
-- HTTPS errors: trust dev cert (`dotnet dev-certs https --trust`) or switch client fetch URL to `http://localhost:5000` and match CORS origins.
+- HTTPS errors: trust the ASP.NET dev cert (`dotnet dev-certs https --trust`) and, if using the Vite HTTPS dev server, ensure `mkcert` can be installed/run by `vite-plugin-mkcert`.
 - Empty list: ensure the API is running, DB file exists, and the client is pointing to the correct base URL.
