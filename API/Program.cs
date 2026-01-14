@@ -1,3 +1,4 @@
+using Application.Activities.Queries;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -13,6 +14,10 @@ IServiceCollection serviceCollection = builder.Services.AddDbContext<AppDbContex
 
 // add CORS policy
 builder.Services.AddCors();
+
+// add MediatR
+builder.Services.AddMediatR(cfg => 
+    cfg.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
 
 var app = builder.Build();
 
