@@ -7,15 +7,20 @@ Full-stack sample with a .NET 10 Web API and a React 19 + Vite client. The API u
 2. Start client: `cd Client && npm install && npm run dev`
 
 ## Stack
-- Backend: ASP.NET Core 10, EF Core Sqlite, minimal hosting
+- Backend: ASP.NET Core 10, EF Core Sqlite, minimal hosting, MediatR (CQRS-style requests/handlers), AutoMapper
 - Frontend: React + TypeScript, Vite, fetches activities from the API
 
 ## Project Structure
 - `API/` — Web API (`/api/activities`, `appsettings.Development.json` for connection string)
+- `Application/` — application layer (MediatR requests/handlers)
 - `Persistence/` — EF Core DbContext, migrations, seeding
 - `Domain/` — Activity entity
 - `Client/` — React app (Vite)
+- `docs/` — project notes and examples
 - `Reactivities.slnx` — solution file
+
+## Docs
+- MediatR request examples (this repo): `docs/MediatR-Request-Examples.md`
 
 ## Prerequisites
 - .NET 10 SDK
@@ -30,6 +35,8 @@ Full-stack sample with a .NET 10 Web API and a React 19 + Vite client. The API u
 3. Key endpoints:
    - `GET /api/activities` — list activities
    - `GET /api/activities/{id}` — activity by id
+   - `POST /api/activities` — create activity (returns created `id`)
+   - `PUT /api/activities` — edit activity (returns `204 No Content`)
    - `GET /weatherforecast` — sample endpoint
 4. DB config: `API/appsettings.Development.json` (`DefaultConnection` points to local SQLite).
 
